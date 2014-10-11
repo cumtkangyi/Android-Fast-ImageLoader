@@ -15,6 +15,20 @@ loader.loadRemoteImage(url, imageView,
 				new BaseLoadListener(imageView));
 ```
 
+
+If you want to load with progress bar, please perform the following code:
+
+```java
+ImageView imageView = new ImageView(mContext);
+ProgressBar progressBar = new ProgressBar(mContext);
+ThumbnailLoader loader = ThumbnailLoader.getInstance(context, "", Constant.CACHE_DIR);
+loader.loadRemoteImage(url, imageView,
+				new CacheWorker.Builder(0, 0)
+						.setLoadingImage(R.drawable.load_default),
+				new BaseLoadListener(imageView, progressBar));
+```
+
+
 Developed By
 ------------
 * Leo Kang, Ning Dai
