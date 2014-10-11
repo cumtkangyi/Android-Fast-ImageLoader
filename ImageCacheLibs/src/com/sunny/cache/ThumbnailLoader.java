@@ -25,7 +25,7 @@ public class ThumbnailLoader extends CacheWorker {
 	private static ThumbnailLoader instance;
 	private String cacheDir = null;
 
-	public synchronized static ThumbnailLoader getInstance(Context _context,
+	public synchronized static ThumbnailLoader getInstance(Context context,
 			String loaderTag, String cachedir) {
 		// ThumbnailLoader result = null;
 		// for (ThumbnailLoader loader : instances) {
@@ -34,10 +34,10 @@ public class ThumbnailLoader extends CacheWorker {
 		// }
 		// }
 		if (instance == null) {
-			final String path = getCacheFolder(_context, cachedir);
+			final String path = getCacheFolder(context, cachedir);
 
 			// judge static cover picture
-			instance = new ThumbnailLoader(_context, loaderTag, path, true);
+			instance = new ThumbnailLoader(context, loaderTag, path, true);
 			// TODO can enable auto clean cache file.
 			instance.cleanCache = false;
 			// instances.add(result);
@@ -47,9 +47,9 @@ public class ThumbnailLoader extends CacheWorker {
 	}
 
 	@TargetApi(Build.VERSION_CODES.HONEYCOMB_MR1)
-	public ThumbnailLoader(Context _context, String tag, String cachePath,
+	public ThumbnailLoader(Context context, String tag, String cachePath,
 			boolean sortASC) {
-		super(_context, cachePath, sortASC);
+		super(context, cachePath, sortASC);
 		this.tag = tag;
 		this.cacheDir = cachePath;
 	}

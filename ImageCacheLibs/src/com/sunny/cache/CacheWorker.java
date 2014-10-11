@@ -98,8 +98,8 @@ public class CacheWorker {
 
 	private int downloadPoolMaxCore = 1;
 
-	public CacheWorker(Context _context, String cachePath, boolean timeSortASC) {
-		this.context = _context;
+	public CacheWorker(Context context, String cachePath, boolean timeSortASC) {
+		this.context = context;
 		mResources = context.getResources();
 		this.timeSortASC = timeSortASC;
 		downloadPoolMaxCore = Runtime.getRuntime().availableProcessors();

@@ -16,11 +16,11 @@ public class DThreadPool implements IDThreadPool {
      */
     CowardExecutor cowardExecuter;
 
-    CommandFactory tyrantCF;
-    CommandFactory cowardCF;
+    CommandFactory tyrantCommandFactory;
+    CommandFactory cowardCommandFactory;
 
-    PriorityBlockingQueue<Runnable> tyrantQ;
-    PriorityBlockingQueue<Runnable> cowradQ;
+    PriorityBlockingQueue<Runnable> tyrantQueue;
+    PriorityBlockingQueue<Runnable> cowradQueue;
 
     ConcurrentHashMap<String, IPriorityTask> taskManager = new ConcurrentHashMap<String, IPriorityTask>();
 
@@ -39,17 +39,17 @@ public class DThreadPool implements IDThreadPool {
                            long keepAliveTime, boolean sortByLatest) {
         ReentrantLock cowardPauseLock = new ReentrantLock();
         Condition unpaused = cowardPauseLock.newCondition();
-        tyrantQ = new PriorityBlockingQueue<Runnable>();
-        cowradQ = new PriorityBlockingQueue<Runnable>();
+        tyrantQueue = new PriorityBlockingQueue<Runnable>();
+        cowradQueue = new PriorityBlockingQueue<Runnable>();
         PriorityThreadFactory threadFactory = new PriorityThreadFactory(
                 "thread-pool", 10);
-        tyrantExecuter = new TyrantExecutor(tyrantSize, despoticLimit, tyrantQ,
+        tyrantExecuter = new TyrantExecutor(tyrantSize, despoticLimit, tyrantQueue,
                 threadFactory, cowardPauseLock, unpaused);
         cowardExecuter = new CowardExecutor(cowardSize,
-                tyrantExecuter.getChain(), cowradQ, threadFactory,
+                tyrantExecuter.getChain(), cowradQueue, threadFactory,
                 cowardPauseLock, unpaused);
-        tyrantCF = new CommandFactory(true);
-        cowardCF = new CommandFactory(false);
+        tyrantCommandFactory = new CommandFactory(true);
+        cowardCommandFactory = new CommandFactory(false);
         lock = new ReentrantLock();
     }
 
@@ -72,10 +72,10 @@ public class DThreadPool implements IDThreadPool {
                          TaskPriority priority) {
         if (runnable != null) {
             if (priority.ordinal() > TaskPriority.BACK_MAX.ordinal()) {
-                tyrantExecuter.execute(tyrantCF.getTask(category, runnable,
+                tyrantExecuter.execute(tyrantCommandFactory.getTask(category, runnable,
                         priority.ordinal(), th));
             } else {
-                cowardExecuter.execute(cowardCF.getTask(category, runnable,
+                cowardExecuter.execute(cowardCommandFactory.getTask(category, runnable,
                         priority.ordinal(), th));
             }
         }
@@ -121,23 +121,23 @@ public class DThreadPool implements IDThreadPool {
         ArrayList<Runnable> buffer = new ArrayList<Runnable>();
         lock.lock();
         try {
-            tyrantQ.drainTo(keys);
+            tyrantQueue.drainTo(keys);
             for (Runnable cmd : keys) {
                 if (((PriorityTask) cmd).category.equals(category)) {
                     buffer.add(cmd);
                 }
             }
             keys.removeAll(buffer);
-            tyrantQ.addAll(keys);
+            tyrantQueue.addAll(keys);
             keys.clear();
-            cowradQ.drainTo(keys);
+            cowradQueue.drainTo(keys);
             for (Runnable cmd : keys) {
                 if (((PriorityTask) cmd).category.equals(category)) {
                     buffer.add(cmd);
                 }
             }
             keys.removeAll(buffer);
-            cowradQ.addAll(keys);
+            cowradQueue.addAll(keys);
         } finally {
             lock.unlock();
         }
@@ -158,7 +158,7 @@ public class DThreadPool implements IDThreadPool {
             if (needClean.size() > 0) {
                 ArrayList<Runnable> keys = new ArrayList<Runnable>();
                 ArrayList<Runnable> buffer = new ArrayList<Runnable>();
-                tyrantQ.drainTo(keys);
+                tyrantQueue.drainTo(keys);
                 PriorityTask pt;
                 for (Runnable cmd : keys) {
                     pt = (PriorityTask) cmd;
@@ -167,7 +167,7 @@ public class DThreadPool implements IDThreadPool {
                     }
                 }
                 keys.removeAll(buffer);
-                tyrantQ.addAll(keys);
+                tyrantQueue.addAll(keys);
             }
         } finally {
             lock.unlock();
