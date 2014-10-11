@@ -3,6 +3,7 @@ CoolCache
 
 A cool image cache
 
+[Play Store Demo][1]
 
 Sample Code
 -----------
