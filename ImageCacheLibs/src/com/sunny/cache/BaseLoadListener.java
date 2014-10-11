@@ -11,6 +11,8 @@ import android.widget.ProgressBar;
 
 /**
  * base listener.
+ * 
+ * @author yi.kang
  */
 public class BaseLoadListener implements OnSetImageListener {
 	SoftReference<ImageView> view;
@@ -29,7 +31,6 @@ public class BaseLoadListener implements OnSetImageListener {
 
 	@Override
 	public void onProgress(int i) {
-
 	}
 
 	@Override

@@ -66,7 +66,7 @@ public class CacheWorker {
 	// Custom suffix.Mark the file is GIF.
 	public static final String GIF_END = ".gif";
 
-	protected Context context;
+	protected Context mContext;
 
 	// Flag for network
 	volatile static boolean networkEnable = true;
@@ -99,7 +99,7 @@ public class CacheWorker {
 	private int downloadPoolMaxCore = 1;
 
 	public CacheWorker(Context context, String cachePath, boolean timeSortASC) {
-		this.context = context;
+		this.mContext = context;
 		mResources = context.getResources();
 		this.timeSortASC = timeSortASC;
 		downloadPoolMaxCore = Runtime.getRuntime().availableProcessors();
@@ -187,14 +187,14 @@ public class CacheWorker {
 							Bitmap loadingBitmap = ((BitmapDrawable) d)
 									.getBitmap();
 							ad = (loadingBitmap == null ? new AsyncDrawable(
-									context.getResources(), task)
-									: new AsyncDrawable(context.getResources(),
+									mContext.getResources(), task)
+									: new AsyncDrawable(mContext.getResources(),
 											loadingBitmap, task));
 						}
 					}
 				}
 				if (ad == null) {
-					ad = new AsyncDrawable(context.getResources(), task);
+					ad = new AsyncDrawable(mContext.getResources(), task);
 				}
 				view.setImageDrawable(ad);
 				searchThreadPool.put(tag, task, TaskPriority.UI_NORM);
@@ -214,8 +214,8 @@ public class CacheWorker {
 				final SearchTask task = new SearchTask(getTag(), view,
 						cacheParams, filename, false, setImageListener);
 				final AsyncDrawable ad = (loadingBitmap == null ? new AsyncDrawable(
-						context.getResources(), task) : new AsyncDrawable(
-						context.getResources(), loadingBitmap, task));
+						mContext.getResources(), task) : new AsyncDrawable(
+						mContext.getResources(), loadingBitmap, task));
 				view.setImageDrawable(ad);
 				searchThreadPool.put(tag, task, TaskPriority.UI_NORM);
 			}
@@ -783,7 +783,7 @@ public class CacheWorker {
 			if (!cacheFile.exists()) {
 				cacheFile.createNewFile();
 			}
-			client.downloadInFile(urlString, cacheFile, context);
+			client.downloadInFile(urlString, cacheFile, mContext);
 		}
 
 		private Bitmap downloadInMemory() throws IOException {
@@ -796,7 +796,7 @@ public class CacheWorker {
 				System.setProperty("http.keepAlive", "false");
 			}
 			DHttpClient client = new DHttpClient();
-			InputStream is = client.downloadInMemory(urlString, context);
+			InputStream is = client.downloadInMemory(urlString, mContext);
 			return is == null ? null : BitmapFactory.decodeStream(is);
 		}
 
