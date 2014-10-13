@@ -188,7 +188,8 @@ public class CacheWorker {
 									.getBitmap();
 							ad = (loadingBitmap == null ? new AsyncDrawable(
 									mContext.getResources(), task)
-									: new AsyncDrawable(mContext.getResources(),
+									: new AsyncDrawable(
+											mContext.getResources(),
 											loadingBitmap, task));
 						}
 					}
@@ -506,6 +507,10 @@ public class CacheWorker {
 				bitmap = decodeBitmap(file.getAbsolutePath(),
 						mCacheParams.imageWidth, mCacheParams.imageHeight,
 						mCacheParams.isScale);
+				if (mCacheParams.needRotation
+						&& bitmap.getWidth() > bitmap.getHeight()) {
+					bitmap = ImageUtil.adjustPhotoRotation(bitmap, 90);
+				}
 				// add support for grey image.
 				if (mCacheParams.greyImage && (bitmap != null)) {
 					bitmap = ImageUtil.toGrayscale(bitmap);
@@ -1129,6 +1134,8 @@ public class CacheWorker {
 
 		private boolean greyImage = false;
 
+		private boolean needRotation = false;
+
 		private String cacheDir = "childhood";
 
 		public Builder(int imageWidth, int imageHeight) {
@@ -1152,6 +1159,11 @@ public class CacheWorker {
 
 		public Builder needRounded(boolean value) {
 			needRounded = value;
+			return this;
+		}
+
+		public Builder needRotation(boolean value) {
+			needRotation = value;
 			return this;
 		}
 
