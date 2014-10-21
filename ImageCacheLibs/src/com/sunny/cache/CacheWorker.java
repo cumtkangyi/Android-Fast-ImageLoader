@@ -103,7 +103,8 @@ public class CacheWorker {
 		mResources = context.getResources();
 		this.timeSortASC = timeSortASC;
 		downloadPoolMaxCore = Runtime.getRuntime().availableProcessors();
-		final int cacheSize = (int) (Runtime.getRuntime().maxMemory() >> 12);
+		final int cacheSize = (int) (Runtime.getRuntime().maxMemory() / 8);
+		// (int) (Runtime.getRuntime().maxMemory() >> 12);
 		mCache = new MemoryCache(cacheSize);
 		searchThreadPool = DThreadPool.newThreadPool(downloadPoolMaxCore, 20,
 				5, !timeSortASC);
@@ -507,9 +508,10 @@ public class CacheWorker {
 				bitmap = decodeBitmap(file.getAbsolutePath(),
 						mCacheParams.imageWidth, mCacheParams.imageHeight,
 						mCacheParams.isScale);
-				if (mCacheParams.needRotation
+				if (mCacheParams.needRotation && bitmap != null
 						&& bitmap.getWidth() > bitmap.getHeight()) {
-					bitmap = ImageUtil.adjustPhotoRotation(bitmap, 90);
+					bitmap = ImageUtil.adjustPhotoRotation(bitmap, 91);
+					return bitmap;
 				}
 				// add support for grey image.
 				if (mCacheParams.greyImage && (bitmap != null)) {
@@ -932,8 +934,12 @@ public class CacheWorker {
 				return null;
 			}
 		}
+
 		// Calculate inSampleSize
 		options.inSampleSize = calculateOriginal(options, width, height);
+		if (options.inSampleSize == 3) {
+			options.inSampleSize = 4;
+		}
 		// Decode bitmap with inSampleSize set
 		options.inJustDecodeBounds = false;
 		options.inPreferredConfig = Config.RGB_565;
