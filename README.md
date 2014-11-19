@@ -1,7 +1,7 @@
 CoolCache
 =========
 
-A cool image cache
+A cool image cache for Android platform.
 
 [Play Store Demo][1]
 
