@@ -1,4 +1,4 @@
-CoolCache
+Android Fast ImageLoader
 =========
 
 A cool image cache for Android platform.
