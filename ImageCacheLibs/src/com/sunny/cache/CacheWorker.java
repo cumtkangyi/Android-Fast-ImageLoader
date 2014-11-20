@@ -947,7 +947,8 @@ public class CacheWorker {
 		try {
 			bm1 = BitmapFactory.decodeFile(filename, options);
 		} catch (OutOfMemoryError oom) {
-
+			oom.printStackTrace();
+			System.gc();
 		}
 		if (bm1 == null) {
 			return null;

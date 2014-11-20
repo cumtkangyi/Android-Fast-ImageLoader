@@ -9,6 +9,8 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 
+import com.sunny.util.ImageUtil;
+
 /**
  * base listener.
  * 
@@ -45,7 +47,13 @@ public class BaseLoadListener implements OnSetImageListener {
 				final ImageView v = view.get();
 				if (v != null) {
 					// v.setImageDrawable(drawable);
-					v.setImageBitmap(drawable.getBitmap());
+					if (drawable.getBitmap().getWidth() > drawable.getBitmap()
+							.getHeight()) {
+						v.setImageBitmap(ImageUtil.rotaingImageView(90,
+								drawable.getBitmap()));
+					} else {
+						v.setImageBitmap(drawable.getBitmap());
+					}
 				}
 			}
 		});
