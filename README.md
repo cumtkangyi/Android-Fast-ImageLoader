@@ -29,11 +29,15 @@ loader.loadRemoteImage(url, imageView,
 				new BaseLoadListener(imageView, progressBar));
 ```
 
+Alipay Account
+------------
+kangyi888cumt@163.com
 
 Developed By
 ------------
 * Leo Kang, Ning Dai
-
+* Email:  cumtkangyi@gmail.com
+* 
 License
 -------
 
