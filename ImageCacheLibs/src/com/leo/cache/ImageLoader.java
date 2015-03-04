@@ -34,6 +34,11 @@ public class ImageLoader extends CacheLoader {
 		// result = loader;
 		// }
 		// }
+		
+		if(context == null) {
+			System.out.println("Context is null.");
+			return null;
+		}
 		if (instance == null) {
 			final String path = getCacheFolder(context, cachedir);
 

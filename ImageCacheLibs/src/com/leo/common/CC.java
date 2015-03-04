@@ -51,4 +51,16 @@ public class CC {
     public static void setDefaultLoadingImageResId(int resId) {
         mDefaultLoadingImageResId = resId;
     }
+    
+    /**
+     * 初始化图片缓存库
+     * @param context
+     * @param cacheDir
+     * @param defaultLoadingImageResId
+     */
+    public static void init(Context context, String cacheDir, int defaultLoadingImageResId) {
+    	mContext = context;
+    	mCacheDir = cacheDir;
+        mDefaultLoadingImageResId = defaultLoadingImageResId;
+    }
 }
