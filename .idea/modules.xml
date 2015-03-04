@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/ImageCacheLibs/ImageCacheLibs.iml" filepath="$PROJECT_DIR$/ImageCacheLibs/ImageCacheLibs.iml" />
+      <module fileurl="file://$PROJECT_DIR$/Android-Fast-ImageLoader.iml" filepath="$PROJECT_DIR$/Android-Fast-ImageLoader.iml" />
     </modules>
   </component>
 </project>

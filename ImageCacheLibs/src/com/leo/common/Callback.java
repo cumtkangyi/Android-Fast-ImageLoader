@@ -1,14 +1,16 @@
-package com.leo.cache;
+package com.leo.common;
 
 import android.graphics.drawable.BitmapDrawable;
 import android.widget.ImageView;
+
+import com.leo.cache.CacheLoader;
 
 /**
  * The base listener for UI. You can handle Callback.
  * 
  * @author Kang, Leo
  */
-public interface OnSetImageListener {
+public interface Callback {
 
 	/**
 	 * Call this method prepare download.
@@ -16,12 +18,12 @@ public interface OnSetImageListener {
 	 * @param url
 	 * @param imageView
 	 */
-	void onStart(final ImageView imageView, final String url);
+	void onPreStart(final ImageView imageView, final String url);
 
 	/**
 	 * Call this method begin download.
 	 */
-	void onStartDownloading();
+	void onStart();
 
 	/**
 	 * Call this method while downloading.
@@ -39,8 +41,8 @@ public interface OnSetImageListener {
 	 * @param cacheParams
 	 * @param isCached
 	 */
-	void onFinish(final ImageView imageView, final BitmapDrawable drawable,
-			final CacheWorker.Builder cacheParams, final boolean isCached);
+	void callback(final ImageView imageView, final BitmapDrawable drawable,
+                  final CacheLoader.Builder cacheParams, final boolean isCached);
 
 	/**
 	 * Encounter problems
@@ -48,7 +50,7 @@ public interface OnSetImageListener {
 	void onError();
 
 	/**
-	 * If {@link CacheWorker.Builder#supportGIF(boolean)} set true. This method
+	 * If {@link com.leo.cache.CacheLoader.Builder#supportGIF(boolean)} set true. This method
 	 * called when GIF is prepare to show.
 	 * 
 	 * @param filePath

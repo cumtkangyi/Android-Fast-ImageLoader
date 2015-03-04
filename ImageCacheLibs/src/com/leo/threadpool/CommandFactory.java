@@ -12,16 +12,16 @@ public class CommandFactory {
         this.sortByLatest = false;
     }
 
-    public PriorityTask getTask(String category, IPriorityTask runnable,
+    public PriorityTaskImpl getTask(String category, IPriorityTask runnable,
                                 int priority, ITaskHandler handler) {
-        PriorityTask task = new PriorityTask(category, sortByLatest, priority,
+        PriorityTaskImpl task = new PriorityTaskImpl(category, sortByLatest, priority,
                 runnable, handler);
         return task;
     }
 
-    public PriorityTask getTask(String category, IPriorityTask runnable,
+    public PriorityTaskImpl getTask(String category, IPriorityTask runnable,
                                 ITaskHandler handler) {
-        PriorityTask task = new PriorityTask(category, sortByLatest, runnable,
+        PriorityTaskImpl task = new PriorityTaskImpl(category, sortByLatest, runnable,
                 handler);
         return task;
     }

@@ -32,8 +32,9 @@ import android.os.StatFs;
 import android.text.TextUtils;
 import android.widget.ImageView;
 
-import com.leo.net.DHttpClient;
-import com.leo.threadpool.DThreadPool;
+import com.leo.common.Callback;
+import com.leo.net.HttpUtils;
+import com.leo.threadpool.ThreadPoolImpl;
 import com.leo.threadpool.IDThreadPool;
 import com.leo.threadpool.IPriorityTask;
 import com.leo.threadpool.TaskPriority;
@@ -46,7 +47,7 @@ import com.leo.util.Utils;
  * 
  * @author Kang, Leo
  */
-public class CacheWorker {
+public class CacheLoader {
 
 	// Schedule of report download progress
 	private static final long SCHEDULE_REPORT = 300l;
@@ -98,7 +99,7 @@ public class CacheWorker {
 
 	private int downloadPoolMaxCore = 1;
 
-	public CacheWorker(Context context, String cachePath, boolean timeSortASC) {
+	public CacheLoader(Context context, String cachePath, boolean timeSortASC) {
 		this.mContext = context;
 		mResources = context.getResources();
 		this.timeSortASC = timeSortASC;
@@ -106,10 +107,10 @@ public class CacheWorker {
 		final int cacheSize = (int) (Runtime.getRuntime().maxMemory() / 8);
 		// (int) (Runtime.getRuntime().maxMemory() >> 12);
 		mCache = new MemoryCache(cacheSize);
-		searchThreadPool = DThreadPool.newThreadPool(downloadPoolMaxCore, 20,
-				5, !timeSortASC);
-		downloadThreadQueue = DThreadPool.newThreadPool(downloadPoolMaxCore, 6,
-				2, !timeSortASC);
+		searchThreadPool = ThreadPoolImpl.newThreadPool(downloadPoolMaxCore, 20,
+                5, !timeSortASC);
+		downloadThreadQueue = ThreadPoolImpl.newThreadPool(downloadPoolMaxCore, 6,
+                2, !timeSortASC);
 
 		final ConnectivityManager cwjManager = (ConnectivityManager) context
 				.getSystemService(Context.CONNECTIVITY_SERVICE);
@@ -145,6 +146,11 @@ public class CacheWorker {
 		// }
 	}
 
+    /**
+     * Check file cache
+     * @param cachePath
+     * @return
+     */
 	private static boolean checkFileCache(String cachePath) {
 		boolean result = false;
 		if (!TextUtils.isEmpty(cachePath)) {
@@ -166,14 +172,14 @@ public class CacheWorker {
 	}
 
 	protected synchronized void doLoadRemoteImage(String url, ImageView view,
-			Builder cacheParams, OnSetImageListener setImageListener) {
+			Builder cacheParams, Callback setImageListener) {
 		synchronized (view) {
 			// viewPool.add(new WeakReference<ImageView>(view));
 
 			BitmapDrawable value = mCache.exist(packKey(url, cacheParams));
 			if (value != null) {
 				// view.setImageDrawable(value);
-				setImageListener.onFinish(view, value, cacheParams, true);
+				setImageListener.callback(view, value, cacheParams, true);
 
 			} else if (cancelWork(false, url, view)) {
 
@@ -206,7 +212,7 @@ public class CacheWorker {
 
 	protected synchronized void doLoadLocalImage(String filename,
 			ImageView view, Builder cacheParams, Bitmap loadingBitmap,
-			OnSetImageListener setImageListener) {
+			Callback setImageListener) {
 		synchronized (view) {
 			// viewPool.add(new WeakReference<ImageView>(view));
 			BitmapDrawable value = mCache.exist(packKey(filename, cacheParams));
@@ -235,7 +241,7 @@ public class CacheWorker {
 		private IDownloadHandler listener = null;
 		private final String screenName;
 		private boolean isBackground = false;
-		private final OnSetImageListener setImageListener;
+		private final Callback setImageListener;
 		private boolean isGIF = false;
 		private final boolean isCancled = false;
 
@@ -243,7 +249,7 @@ public class CacheWorker {
 
 		public SearchTask(String scrrenName, ImageView view,
 				Builder cacheParams, boolean isBackground,
-				OnSetImageListener setImageListener) {
+				Callback setImageListener) {
 			this.setImageListener = setImageListener;
 			imageViewReference = new WeakReference<ImageView>(view);
 			this.screenName = scrrenName;
@@ -257,7 +263,7 @@ public class CacheWorker {
 		 */
 		public SearchTask(String scrrenName, String url, ImageView view,
 				Builder cacheParams, boolean isBackground,
-				OnSetImageListener setImageListener) {
+				Callback setImageListener) {
 			this(scrrenName, view, cacheParams, isBackground, setImageListener);
 			this.url = url;
 			isGIF = (url.endsWith(".gif")) || (url.endsWith(".GIF"));
@@ -265,7 +271,7 @@ public class CacheWorker {
 
 		public SearchTask(String scrrenName, ImageView view,
 				Builder cacheParams, String filename, boolean isBackground,
-				OnSetImageListener setImageListener) {
+				Callback setImageListener) {
 			this(scrrenName, view, cacheParams, isBackground, setImageListener);
 			this.filename = filename;
 			isGIF = judgeGIF(filename);
@@ -294,7 +300,7 @@ public class CacheWorker {
 				if (isGIF && file.exists() && (!mCacheParams.supportGIF)
 						&& setImageListener != null) {
 					setImageListener.onLoadGIF(filename);
-					// gifListener.onFinish(filename);
+					// gifListener.callback(filename);
 					return;
 				}
 				bitmap = isGIF ? readFromGIFFile(file) : readFromFile(file);
@@ -315,8 +321,8 @@ public class CacheWorker {
 						}
 						mCache.put(packKey(filename, mCacheParams), drawable);
 						if (setImageListener != null) {
-							setImageListener.onFinish(imageView, drawable,
-									mCacheParams, true);
+							setImageListener.callback(imageView, drawable,
+                                    mCacheParams, true);
 						}
 					} else {
 						bitmap.recycle();
@@ -385,8 +391,8 @@ public class CacheWorker {
 								}
 								mCache.put(packKey(url, mCacheParams), drawable);
 								if (setImageListener != null) {
-									setImageListener.onFinish(imageView,
-											drawable, mCacheParams, false);
+									setImageListener.callback(imageView,
+                                            drawable, mCacheParams, false);
 								}
 							} else {
 								if (bitmap != null) {
@@ -410,7 +416,7 @@ public class CacheWorker {
 						final ImageView imageView = getAttachedImageView();
 						if (imageView != null && (!stop) && onScreen
 								&& (setImageListener != null)) {
-							setImageListener.onStartDownloading();
+							setImageListener.onStart();
 						}
 					}
 
@@ -454,8 +460,8 @@ public class CacheWorker {
 								}
 								mCache.put(packKey(url, mCacheParams), drawable);
 								if (setImageListener != null) {
-									setImageListener.onFinish(imageView,
-											drawable, mCacheParams, false);
+									setImageListener.callback(imageView,
+                                            drawable, mCacheParams, false);
 								}
 							} else {
 								if (bitmap != null) {
@@ -467,7 +473,7 @@ public class CacheWorker {
 					}
 				};
 				if (setImageListener != null) {
-					setImageListener.onStart(getAttachedImageView(), url);
+					setImageListener.onPreStart(getAttachedImageView(), url);
 				}
 				DownloadTask task = new DownloadTask(url, filename, listener);
 				downloadThreadQueue.put(screenName, task, TaskPriority.UI_NORM);
@@ -492,8 +498,8 @@ public class CacheWorker {
 					mCache.put(packKey(url, mCacheParams), drawable);
 					if (setImageListener != null) {
 
-						setImageListener.onFinish(imageView, drawable,
-								mCacheParams, true);
+						setImageListener.callback(imageView, drawable,
+                                mCacheParams, true);
 					}
 					// setImageBitmap(imageView, bitmap);
 				} else {
@@ -785,7 +791,7 @@ public class CacheWorker {
 			if (Build.VERSION.SDK_INT < Build.VERSION_CODES.FROYO) {
 				System.setProperty("http.keepAlive", "false");
 			}
-			DHttpClient client = new DHttpClient();
+			HttpUtils client = new HttpUtils();
 			File cacheFile = new File(storePath, filename);
 			if (!cacheFile.exists()) {
 				cacheFile.createNewFile();
@@ -802,7 +808,7 @@ public class CacheWorker {
 			if (Build.VERSION.SDK_INT < Build.VERSION_CODES.FROYO) {
 				System.setProperty("http.keepAlive", "false");
 			}
-			DHttpClient client = new DHttpClient();
+			HttpUtils client = new HttpUtils();
 			InputStream is = client.downloadInMemory(urlString, mContext);
 			return is == null ? null : BitmapFactory.decodeStream(is);
 		}
@@ -847,9 +853,9 @@ public class CacheWorker {
 
 	public void restartThreadPool() {
 		// searchThreadPool = null;
-		searchThreadPool = DThreadPool.newThreadPool(1, 20, 5, !timeSortASC);
+		searchThreadPool = ThreadPoolImpl.newThreadPool(1, 20, 5, !timeSortASC);
 		// downloadThreadQueue = null;
-		downloadThreadQueue = DThreadPool.newThreadPool(1, 6, 5, !timeSortASC);
+		downloadThreadQueue = ThreadPoolImpl.newThreadPool(1, 6, 5, !timeSortASC);
 	}
 
 	protected String getTag() {
@@ -1089,7 +1095,7 @@ public class CacheWorker {
 	}
 
 	public static boolean judgeGIF(String filename) {
-		return (filename.endsWith(CacheWorker.GIF_END))
+		return (filename.endsWith(CacheLoader.GIF_END))
 				|| (filename.endsWith(".gif")) || (filename.endsWith(".GIF"));
 	}
 

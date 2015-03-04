@@ -6,7 +6,7 @@ import java.util.concurrent.*;
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.ReentrantLock;
 
-public class DThreadPool implements IDThreadPool {
+public class ThreadPoolImpl implements IDThreadPool {
     /**
      * Tyrant
      */
@@ -31,11 +31,11 @@ public class DThreadPool implements IDThreadPool {
 
     public static IDThreadPool newThreadPool(int cowardSize, int tyrantSize,
                                              int despoticLimit, boolean sortByLatest) {
-        return new DThreadPool(cowardSize, tyrantSize, despoticLimit, 0,
+        return new ThreadPoolImpl(cowardSize, tyrantSize, despoticLimit, 0,
                 sortByLatest);
     }
 
-    private DThreadPool(int cowardSize, int tyrantSize, int despoticLimit,
+    private ThreadPoolImpl(int cowardSize, int tyrantSize, int despoticLimit,
                            long keepAliveTime, boolean sortByLatest) {
         ReentrantLock cowardPauseLock = new ReentrantLock();
         Condition unpaused = cowardPauseLock.newCondition();
@@ -123,7 +123,7 @@ public class DThreadPool implements IDThreadPool {
         try {
             tyrantQueue.drainTo(keys);
             for (Runnable cmd : keys) {
-                if (((PriorityTask) cmd).category.equals(category)) {
+                if (((PriorityTaskImpl) cmd).category.equals(category)) {
                     buffer.add(cmd);
                 }
             }
@@ -132,7 +132,7 @@ public class DThreadPool implements IDThreadPool {
             keys.clear();
             cowradQueue.drainTo(keys);
             for (Runnable cmd : keys) {
-                if (((PriorityTask) cmd).category.equals(category)) {
+                if (((PriorityTaskImpl) cmd).category.equals(category)) {
                     buffer.add(cmd);
                 }
             }
@@ -159,9 +159,9 @@ public class DThreadPool implements IDThreadPool {
                 ArrayList<Runnable> keys = new ArrayList<Runnable>();
                 ArrayList<Runnable> buffer = new ArrayList<Runnable>();
                 tyrantQueue.drainTo(keys);
-                PriorityTask pt;
+                PriorityTaskImpl pt;
                 for (Runnable cmd : keys) {
-                    pt = (PriorityTask) cmd;
+                    pt = (PriorityTaskImpl) cmd;
                     if (needClean.contains(pt.runnable)) {
                         buffer.add(cmd);
                     }

@@ -1,4 +1,4 @@
-package com.leo.cache;
+package com.leo.common;
 
 import java.lang.ref.SoftReference;
 
@@ -9,6 +9,8 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 
+import com.leo.cache.CacheLoader;
+import com.leo.common.Callback;
 import com.leo.util.ImageUtil;
 
 /**
@@ -16,17 +18,17 @@ import com.leo.util.ImageUtil;
  * 
  * @author yi.kang
  */
-public class BaseLoadListener implements OnSetImageListener {
+public class DefaultCallback implements Callback {
 	SoftReference<ImageView> view;
 	ProgressBar progressBar;
 	Handler handler = null;
 
-	public BaseLoadListener(ImageView view) {
+	public DefaultCallback(ImageView view) {
 		handler = new Handler(Looper.getMainLooper());
 		this.view = new SoftReference<ImageView>(view);
 	}
 
-	public BaseLoadListener(ImageView view, ProgressBar progressBar) {
+	public DefaultCallback(ImageView view, ProgressBar progressBar) {
 		this(view);
 		this.progressBar = progressBar;
 	}
@@ -36,8 +38,8 @@ public class BaseLoadListener implements OnSetImageListener {
 	}
 
 	@Override
-	public void onFinish(ImageView imageView, final BitmapDrawable drawable,
-			CacheWorker.Builder cacheParams, boolean isCached) {
+	public void callback(ImageView imageView, final BitmapDrawable drawable,
+                         CacheLoader.Builder cacheParams, boolean isCached) {
 		handler.post(new Runnable() {
 			@Override
 			public void run() {
@@ -77,11 +79,11 @@ public class BaseLoadListener implements OnSetImageListener {
 	}
 
 	@Override
-	public void onStartDownloading() {
+	public void onStart() {
 	}
 
 	@Override
-	public void onStart(ImageView imageView, String url) {
+	public void onPreStart(ImageView imageView, String url) {
 		handler.post(new Runnable() {
 			@Override
 			public void run() {

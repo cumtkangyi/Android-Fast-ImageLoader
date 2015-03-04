@@ -7,6 +7,7 @@ import android.os.Build;
 import android.webkit.URLUtil;
 import android.widget.ImageView;
 
+import com.leo.common.Callback;
 import com.leo.util.MD5Util;
 
 /**
@@ -15,20 +16,20 @@ import com.leo.util.MD5Util;
  * 
  * @author Kang, Leo
  */
-public class ThumbnailLoader extends CacheWorker {
+public class ImageLoader extends CacheLoader {
 
 	/**
 	 * Memory cache!
 	 */
-	// public static ArrayList<ThumbnailLoader> instances = new
-	// ArrayList<ThumbnailLoader>();
-	private static ThumbnailLoader instance;
+	// public static ArrayList<ImageLoader> instances = new
+	// ArrayList<ImageLoader>();
+	private static ImageLoader instance;
 	private String cacheDir = null;
 
-	public synchronized static ThumbnailLoader getInstance(Context context,
+	public synchronized static ImageLoader getInstance(Context context,
 			String loaderTag, String cachedir) {
-		// ThumbnailLoader result = null;
-		// for (ThumbnailLoader loader : instances) {
+		// ImageLoader result = null;
+		// for (ImageLoader loader : instances) {
 		// if (loader.tag.equalsIgnoreCase(loaderTag)) {
 		// result = loader;
 		// }
@@ -37,7 +38,7 @@ public class ThumbnailLoader extends CacheWorker {
 			final String path = getCacheFolder(context, cachedir);
 
 			// judge static cover picture
-			instance = new ThumbnailLoader(context, loaderTag, path, true);
+			instance = new ImageLoader(context, loaderTag, path, true);
 			// TODO can enable auto clean cache file.
 			instance.cleanCache = false;
 			// instances.add(result);
@@ -47,15 +48,15 @@ public class ThumbnailLoader extends CacheWorker {
 	}
 
 	@TargetApi(Build.VERSION_CODES.HONEYCOMB_MR1)
-	public ThumbnailLoader(Context context, String tag, String cachePath,
-			boolean sortASC) {
+	public ImageLoader(Context context, String tag, String cachePath,
+                       boolean sortASC) {
 		super(context, cachePath, sortASC);
 		this.tag = tag;
 		this.cacheDir = cachePath;
 	}
 
 	// public static void hardEvict() {
-	// for (ThumbnailLoader self : instances) {
+	// for (ImageLoader self : instances) {
 	// self.cleanMemoryCache();
 	// self.searchThreadPool.shutdownNow();
 	// self.downloadThreadQueue.cancelQueueByCategory(self.tag);
@@ -64,16 +65,16 @@ public class ThumbnailLoader extends CacheWorker {
 	// }
 
 	/**
-	 * ��峰��缂�瀛����褰�
+	 * 获取缓存路径
 	 * 
 	 * @return
 	 */
 	public String getCacheDir() {
-		return this.cacheDir;
+        return this.cacheDir;
 	}
 
 	/**
-	 * ��峰��缂�瀛����浠惰矾寰�
+	 * 获取文件路径
 	 * 
 	 * @param url
 	 * @return
@@ -82,20 +83,21 @@ public class ThumbnailLoader extends CacheWorker {
 		return cacheDir + "/" + MD5Util.getStringMD5(url);
 	}
 
+
 	public synchronized void loadRemoteImage(String url, ImageView view,
-			Builder cacheParams, OnSetImageListener setImageListener) {
+			Builder cacheParams, Callback callback) {
 		if (URLUtil.isValidUrl(url)) {
-			doLoadRemoteImage(url, view, cacheParams, setImageListener);
+			doLoadRemoteImage(url, view, cacheParams, callback);
 		}
 
 	}
 
 	public synchronized void loadLocalImage(String filename, ImageView view,
 			Builder cacheParams, Bitmap loadingBitmap,
-			OnSetImageListener setImageListener) {
+			Callback callback) {
 		if (URLUtil.isFileUrl(filename)) {
 			doLoadLocalImage(filename, view, cacheParams, loadingBitmap,
-					setImageListener);
+					callback);
 		}
 	}
 
