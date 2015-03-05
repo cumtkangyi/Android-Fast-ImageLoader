@@ -5,12 +5,20 @@ A cool image cache for Android platform.
 
 [Play Store Demo][1]
 
+Android Permission
+-----------
+'''xml
+<uses-permission android:name="android.permission.INTERNET"/>
+<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+'''
+
 Sample Code
 -----------
 ```java
 ImageView imageView = new ImageView(mContext);
 /*如下代码可以放在application中初始化*/
-// CC.init(getApplicationContext(), "Test", R.drawable.ic_launcher);
+CC.init(getApplicationContext(), "Test", R.drawable.ic_launcher);
         
 String url = "http://h.hiphotos.baidu.com/image/pic/item/b8014a90f603738d26724c24b11bb051f819ecf8.jpg";
 CC.bind(url, imageView);
@@ -23,7 +31,7 @@ If you want to load with progress bar, please perform the following code:
 ImageView imageView = new ImageView(mContext);
 ProgressBar progressBar = new ProgressBar(mContext);
 /*如下代码可以放在application中初始化*/
-// CC.init(getApplicationContext(), "Test", R.drawable.ic_launcher);
+CC.init(getApplicationContext(), "Test", R.drawable.ic_launcher);
         
 String url = "http://h.hiphotos.baidu.com/image/pic/item/b8014a90f603738d26724c24b11bb051f819ecf8.jpg";
 CC.bind(url, imageView, new DefaultCallback(imageView, progressBar));
