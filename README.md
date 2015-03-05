@@ -7,11 +7,11 @@ A cool image cache for Android platform.
 
 Android Permission
 -----------
-'''xml
+```java
 <uses-permission android:name="android.permission.INTERNET"/>
 <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
 <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
-'''
+```
 
 Sample Code
 -----------
