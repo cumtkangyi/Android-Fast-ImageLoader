@@ -21,21 +21,7 @@
     <option name="TOOL_WINDOW_CONFIGURED_FILTER" value="app: com.leo.imageloader.demo" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="8ac811f5-9e8c-4726-86d4-39ed14695f4e" name="Default" comment="1. Delete unused file.&#10;2. Update readme.md.&#10;3. Fixed ImageLoader demo bugs.">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/Android-Fast-ImageLoader.iml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/ImageCacheLibs/ImageCacheLibs.iml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/ImageLoaderDemo/ImageLoaderDemo.iml" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/ImageCacheLibs/src/com/leo/net/DHttpClient.java" afterPath="" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/ImageLoaderDemo/.classpath" afterPath="$PROJECT_DIR$/ImageLoaderDemo/.classpath" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/ImageLoaderDemo/AndroidManifest.xml" afterPath="$PROJECT_DIR$/ImageLoaderDemo/AndroidManifest.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/ImageLoaderDemo/src/com/leo/imageloader/demo/MainActivity.java" afterPath="$PROJECT_DIR$/ImageLoaderDemo/src/com/leo/imageloader/demo/MainActivity.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/README.md" afterPath="$PROJECT_DIR$/README.md" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/ImageLoaderDemo/res/layout/activity_main.xml" afterPath="$PROJECT_DIR$/ImageLoaderDemo/res/layout/activity_main.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/ImageCacheLibs/build.gradle" afterPath="$PROJECT_DIR$/ImageCacheLibs/build.gradle" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/gradle.xml" afterPath="$PROJECT_DIR$/.idea/gradle.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/misc.xml" afterPath="$PROJECT_DIR$/.idea/misc.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/modules.xml" afterPath="$PROJECT_DIR$/.idea/modules.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/ImageLoaderDemo/project.properties" afterPath="$PROJECT_DIR$/ImageLoaderDemo/project.properties" />
+    <list default="true" id="8ac811f5-9e8c-4726-86d4-39ed14695f4e" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="Android-Fast-ImageLoader.iws" />
@@ -90,8 +76,8 @@
       <file leaf-file-name="build.gradle" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/ImageCacheLibs/build.gradle">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="1.086758" vertical-offset="246" max-vertical-offset="874">
-              <caret line="38" column="5" selection-start-line="38" selection-start-column="5" selection-end-line="38" selection-end-column="5" />
+            <state vertical-scroll-proportion="0.5205479" vertical-offset="57" max-vertical-offset="874">
+              <caret line="15" column="0" selection-start-line="15" selection-start-column="0" selection-end-line="15" selection-end-column="0" />
               <folding />
             </state>
           </provider>
@@ -2372,6 +2358,11 @@
       <created>1425305315105</created>
       <updated>1425305315105</updated>
     </task>
+    <task id="LOCAL-00001" summary="1. Delete unused file.&#10;2. Update readme.md.&#10;3. Fixed ImageLoader demo bugs.">
+      <created>1425528197037</created>
+      <updated>1425528197037</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="TodoView" selected-index="0">
@@ -2563,6 +2554,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="361" max-vertical-offset="532">
           <caret line="19" column="38" selection-start-line="19" selection-start-column="38" selection-end-line="19" selection-end-column="38" />
+          <folding />
         </state>
       </provider>
     </entry>
@@ -2621,6 +2613,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="361" max-vertical-offset="532">
           <caret line="19" column="38" selection-start-line="19" selection-start-column="38" selection-end-line="19" selection-end-column="38" />
+          <folding />
         </state>
       </provider>
     </entry>
@@ -2715,6 +2708,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.33501258" vertical-offset="0" max-vertical-offset="532">
           <caret line="7" column="36" selection-start-line="7" selection-start-column="36" selection-end-line="7" selection-end-column="36" />
+          <folding />
         </state>
       </provider>
     </entry>
@@ -2790,8 +2784,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/ImageCacheLibs/build.gradle">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="1.086758" vertical-offset="246" max-vertical-offset="874">
-          <caret line="38" column="5" selection-start-line="38" selection-start-column="5" selection-end-line="38" selection-end-column="5" />
+        <state vertical-scroll-proportion="0.5205479" vertical-offset="57" max-vertical-offset="874">
+          <caret line="15" column="0" selection-start-line="15" selection-start-column="0" selection-end-line="15" selection-end-column="0" />
           <folding />
         </state>
       </provider>
