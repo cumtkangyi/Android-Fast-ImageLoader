@@ -3,7 +3,7 @@ Android Fast ImageLoader
 
 A cool image cache for Android platform.
 
-[Play Store Demo][1]
+[Demo][1]
 
 Android Permission
 -----------
@@ -63,4 +63,4 @@ License
     See the License for the specific language governing permissions and
     limitations under the License.
 
-[1]: https://play.google.com/store/apps/details?id=com.pure.girls
+[1]: http://kangvp.apps.cn/
