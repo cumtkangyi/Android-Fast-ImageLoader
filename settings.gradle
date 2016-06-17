@@ -1,2 +1,1 @@
-include ':ImageLoaderDemo'
-include ':ImageCacheLibs'
+include ':app', ':library'
