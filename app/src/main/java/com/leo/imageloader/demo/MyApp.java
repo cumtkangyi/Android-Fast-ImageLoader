@@ -1,6 +1,6 @@
 package com.leo.imageloader.demo;
 
-import com.leo.common.CC;
+import com.leo.common.FastImageLoader;
 
 import android.app.Application;
 
@@ -12,7 +12,7 @@ public class MyApp extends Application {
 		super.onCreate();
 		
 		/*如下代码可以放在调用CC.bin之前的代码中初始化*/
-		CC.init(getApplicationContext(), "Test", R.drawable.ic_launcher);
+		FastImageLoader.init(getApplicationContext(), "Test", R.drawable.ic_launcher);
 	}
 
 }

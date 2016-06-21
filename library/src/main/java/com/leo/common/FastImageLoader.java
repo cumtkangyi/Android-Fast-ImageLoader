@@ -11,7 +11,7 @@ import com.leo.cache.ImageLoader;
  *
  * Center Controller
  */
-public class CC {
+public class FastImageLoader {
 
     static Context mContext;
     static String mCacheDir;
@@ -19,6 +19,9 @@ public class CC {
 
     public static void bind(String url, ImageView imageView) {
         bind(url, imageView, false, null);
+    }
+    public static void bind(String url, ImageView imageView, int width, int height) {
+        bind(url, imageView, false, width, height, null);
     }
 
     public static void bind(String url, ImageView imageView, Callback callback) {
@@ -36,6 +39,17 @@ public class CC {
                     callback != null ? callback : new DefaultCallback(imageView));
         } else {
             loader.loadLocalImage(url, imageView, new CacheLoader.Builder(0, 0), null,
+                    callback != null ? callback : new DefaultCallback(imageView));
+        }
+    }
+
+    public static void bind(String url, ImageView imageView, boolean isLocal,int width, int height, Callback callback) {
+        ImageLoader loader = ImageLoader.getInstance(mContext, "", mCacheDir);
+        if (!isLocal) {
+            loader.loadRemoteImage(url, imageView, new CacheLoader.Builder(width, height),
+                    callback != null ? callback : new DefaultCallback(imageView));
+        } else {
+            loader.loadLocalImage(url, imageView, new CacheLoader.Builder(width, height), null,
                     callback != null ? callback : new DefaultCallback(imageView));
         }
     }
