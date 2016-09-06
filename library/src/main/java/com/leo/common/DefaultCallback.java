@@ -22,14 +22,16 @@ public class DefaultCallback implements Callback {
 	SoftReference<ImageView> view;
 	ProgressBar progressBar;
 	Handler handler = null;
+	boolean isRotate;
 
-	public DefaultCallback(ImageView view) {
+	public DefaultCallback(ImageView view, boolean isRotate) {
 		handler = new Handler(Looper.getMainLooper());
 		this.view = new SoftReference<ImageView>(view);
+		this.isRotate = isRotate;
 	}
 
-	public DefaultCallback(ImageView view, ProgressBar progressBar) {
-		this(view);
+	public DefaultCallback(ImageView view, ProgressBar progressBar, boolean isRotate) {
+		this(view, isRotate);
 		this.progressBar = progressBar;
 	}
 
@@ -50,7 +52,7 @@ public class DefaultCallback implements Callback {
 				if (v != null) {
 					// v.setImageDrawable(drawable);
 					if (drawable.getBitmap().getWidth() > drawable.getBitmap()
-							.getHeight()) {
+							.getHeight() && isRotate) {
 						v.setImageBitmap(ImageUtil.rotaingImageView(90,
 								drawable.getBitmap()));
 					} else {

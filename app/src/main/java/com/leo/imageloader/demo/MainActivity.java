@@ -25,7 +25,7 @@ public class MainActivity extends Activity {
 
         ImageView imageView1 = (ImageView) findViewById(R.id.imageView2);
         url = "http://pic1.win4000.com/pic/8/49/c838483430.jpg";
-        FastImageLoader.bind(url, imageView1, new DefaultCallback(imageView1));
+        FastImageLoader.bind(url, imageView1, new DefaultCallback(imageView1, false));
 	}
 
 	@Override
