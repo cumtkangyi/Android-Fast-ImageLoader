@@ -21,6 +21,7 @@ public class MainActivity extends Activity {
 		// FastImageLoader.init(getApplicationContext(), "Test", R.drawable.ic_launcher);
 		
 		String url = "http://h.hiphotos.baidu.com/image/pic/item/b8014a90f603738d26724c24b11bb051f819ecf8.jpg";
+		url = "https://img.alicdn.com/imgextra/i2/901409638/TB2ym5SX9uJ.eBjy0FgXXXBBXXa_!!901409638.jpg";
 		FastImageLoader.bind(url, imageView);
 
         ImageView imageView1 = (ImageView) findViewById(R.id.imageView2);

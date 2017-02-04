@@ -9,6 +9,13 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.security.cert.X509Certificate;
+
+import javax.net.ssl.HttpsURLConnection;
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.SSLSocketFactory;
+import javax.net.ssl.TrustManager;
+import javax.net.ssl.X509TrustManager;
 
 public class HttpUtils {
 
@@ -31,10 +38,15 @@ public class HttpUtils {
 		InputStream is = null;
 		try {
 			url = new URL(urlString);
-			java.net.Proxy proxy = ProxyUtil.getProxy(context);
-			urlConnection = (proxy != null ? (HttpURLConnection) url
-					.openConnection(proxy) : (HttpURLConnection) url
-					.openConnection());
+			urlConnection = (HttpURLConnection) url
+					.openConnection();
+			if (urlConnection instanceof HttpsURLConnection) {
+				SSLSocketFactory sslSocketFactory = getTrustAllSSLSocketFactory();
+				if (sslSocketFactory != null) {
+					((HttpsURLConnection) urlConnection).setSSLSocketFactory(sslSocketFactory);
+				}
+			}
+
 			urlConnection.setConnectTimeout(20000);
 			urlConnection.setReadTimeout(20000);
 			is = urlConnection.getInputStream();
@@ -88,10 +100,14 @@ public class HttpUtils {
 		InputStream is = null;
 		try {
 			url = new URL(urlString);
-			java.net.Proxy proxy = ProxyUtil.getProxy(context);
-			urlConnection = (proxy != null ? (HttpURLConnection) url
-					.openConnection(proxy) : (HttpURLConnection) url
-					.openConnection());
+			urlConnection = (HttpURLConnection) url
+					.openConnection();
+			if (urlConnection instanceof HttpsURLConnection) {
+				SSLSocketFactory sslSocketFactory = getTrustAllSSLSocketFactory();
+				if (sslSocketFactory != null) {
+					((HttpsURLConnection) urlConnection).setSSLSocketFactory(sslSocketFactory);
+				}
+			}
 			urlConnection.setConnectTimeout(20000);
 			urlConnection.setReadTimeout(20000);
 			is = urlConnection.getInputStream();
@@ -102,4 +118,39 @@ public class HttpUtils {
 		return is;
 	}
 
+	private static SSLSocketFactory trustAllSSlSocketFactory;
+
+	public static SSLSocketFactory getTrustAllSSLSocketFactory() {
+		if (trustAllSSlSocketFactory == null) {
+			synchronized (HttpUtils.class) {
+				if (trustAllSSlSocketFactory == null) {
+
+					// 信任所有证书
+					TrustManager[] trustAllCerts = new TrustManager[]{new X509TrustManager() {
+						@Override
+						public X509Certificate[] getAcceptedIssuers() {
+							return null;
+						}
+
+						@Override
+						public void checkClientTrusted(X509Certificate[] certs, String authType) {
+						}
+
+						@Override
+						public void checkServerTrusted(X509Certificate[] certs, String authType) {
+						}
+					}};
+					try {
+						SSLContext sslContext = SSLContext.getInstance("TLS");
+						sslContext.init(null, trustAllCerts, null);
+						trustAllSSlSocketFactory = sslContext.getSocketFactory();
+					} catch (Throwable ex) {
+						//LogUtil.e(ex.getMessage());
+					}
+				}
+			}
+		}
+
+		return trustAllSSlSocketFactory;
+	}
 }

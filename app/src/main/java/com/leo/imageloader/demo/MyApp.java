@@ -12,7 +12,7 @@ public class MyApp extends Application {
 		super.onCreate();
 		
 		/*如下代码可以放在调用CC.bin之前的代码中初始化*/
-		FastImageLoader.init(getApplicationContext(), "Test", R.drawable.ic_launcher);
+		FastImageLoader.init(getApplicationContext(), "FastImageLoader", R.drawable.ic_launcher);
 	}
 
 }
