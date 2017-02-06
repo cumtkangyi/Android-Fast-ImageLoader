@@ -21,13 +21,7 @@ public class HttpUtils {
 
 	public void downloadInFile(String urlString, File file, Context context)
 			throws IOException {
-		/**
-		 * Workaround for bug pre-Froyo, see here for more info: http://android
-		 * -developers.blogspot.com/2011/09/androids-http-clients.html
-		 */
-		if (Build.VERSION.SDK_INT < Build.VERSION_CODES.FROYO) {
-			System.setProperty("http.keepAlive", "false");
-		}
+
 		HttpURLConnection urlConnection = null;
 		FileOutputStream out = null;
 		File cacheFile = file;
@@ -51,7 +45,7 @@ public class HttpUtils {
 			urlConnection.setReadTimeout(20000);
 			is = urlConnection.getInputStream();
 			out = new FileOutputStream(cacheFile);
-			byte[] buffer = new byte[8 * 1024];
+			byte[] buffer = new byte[4 * 1024];
 			int b = -1;
 			while ((b = is.read(buffer)) != -1) {
 				out.write(buffer, 0, b);
@@ -88,13 +82,7 @@ public class HttpUtils {
 
 	public InputStream downloadInMemory(String urlString, Context context)
 			throws IOException {
-		/**
-		 * Workaround for bug pre-Froyo, see here for more info: http://android
-		 * -developers.blogspot.com/2011/09/androids-http-clients.html
-		 */
-		if (Build.VERSION.SDK_INT < Build.VERSION_CODES.FROYO) {
-			System.setProperty("http.keepAlive", "false");
-		}
+
 		HttpURLConnection urlConnection = null;
 		URL url;
 		InputStream is = null;
