@@ -1108,17 +1108,12 @@ public class CacheLoader {
 			if (!cacheFileDir.exists())
 				cacheFileDir.mkdir();
 		} else {
-			File fExternalStorageDirectory = Environment
-					.getExternalStorageDirectory();
-			String str = null;
-			if (!TextUtils.isEmpty(cacheDir)) {
-				str = cacheDir;
-			} else {
-				str = "childhood";
+			if (TextUtils.isEmpty(cacheDir)) {
+				cacheDir = "";
 			}
-			File catchFileDir = new File(fExternalStorageDirectory, str);
+			File catchFileDir = mContext.getExternalFilesDir(cacheDir);
 			if (!catchFileDir.exists()) {
-				catchFileDir.mkdir();
+				catchFileDir.mkdirs();
 			}
 			File imageCacheDir = new File(catchFileDir, "imagecache");
 			if (!imageCacheDir.exists()) {
