@@ -772,6 +772,7 @@ public class CacheLoader {
 			if (listeners != null) {
 				synchronized (listeners) {
 					for (IDownloadHandler tl : listeners) {
+						if (null == tl) return;
 						if (storeInFile) {
 							tl.onFinish();
 						} else {
@@ -1105,23 +1106,29 @@ public class CacheLoader {
 				Environment.MEDIA_MOUNTED)) {
 			cacheFileDir = mContext.getCacheDir();
 			cacheFileDir = new File(cacheFileDir, "imgcache");
-			if (!cacheFileDir.exists())
+			if (null != cacheFileDir && !cacheFileDir.exists())
 				cacheFileDir.mkdir();
 		} else {
 			if (TextUtils.isEmpty(cacheDir)) {
 				cacheDir = "";
 			}
 			File catchFileDir = mContext.getExternalFilesDir(cacheDir);
-			if (!catchFileDir.exists()) {
+			if (null != catchFileDir && !catchFileDir.exists()) {
 				catchFileDir.mkdirs();
 			}
 			File imageCacheDir = new File(catchFileDir, "imagecache");
-			if (!imageCacheDir.exists()) {
+			if (null != imageCacheDir && !imageCacheDir.exists()) {
 				imageCacheDir.mkdir();
 			}
 			cacheFileDir = imageCacheDir;
 		}
-		return cacheFileDir.getAbsolutePath();
+
+		if (null != cacheFileDir) {
+			return cacheFileDir.getAbsolutePath();
+		} else {
+			File directory = Environment.getExternalStorageDirectory();
+			return directory.getAbsolutePath() + "/.fastimageloader/";
+		}
 	}
 
 	public static class Builder {
