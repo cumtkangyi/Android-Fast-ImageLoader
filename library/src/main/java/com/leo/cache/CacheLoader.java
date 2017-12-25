@@ -273,7 +273,9 @@ public class CacheLoader {
 				Builder cacheParams, String filename, boolean isBackground,
 				Callback setImageListener) {
 			this(scrrenName, view, cacheParams, isBackground, setImageListener);
-			this.filename = filename;
+			if (!TextUtils.isEmpty(filename) && filename.startsWith("file://")) {
+				this.filename = filename.replaceAll("file://", "");
+			}
 			isGIF = judgeGIF(filename);
 		}
 
@@ -569,6 +571,9 @@ public class CacheLoader {
 
 		@Override
 		public String getFlag() {
+			if (TextUtils.isEmpty(url)) {
+				return filename;
+			}
 			return url;
 		}
 
@@ -711,6 +716,9 @@ public class CacheLoader {
 
 		@Override
 		public String getFlag() {
+			if (TextUtils.isEmpty(urlString)) {
+				return filename;
+			}
 			return urlString;
 		}
 
